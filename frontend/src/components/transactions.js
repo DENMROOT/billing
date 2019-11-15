@@ -14,17 +14,17 @@ const Transactions = ({transactions: transactions}) => {
                 </tr>
                 </thead>
 
-            {transactions.map((transaction) => (
-                <tbody>
-                <tr className={transaction.amount >= 0 ? "table-success"  : "table-danger" }>
-                    <td class="text-center">{transaction.transactionId}</td>
-                    <td class="text-center">{transaction.accountId}</td>
-                    <td class="text-center">{transaction.type}</td>
-                    <td class="text-center">{transaction.amount}</td>
-                    <td class="text-center">{new Date(transaction.effectiveDate).toISOString()}</td>
-                </tr>
-                </tbody>
-            ))}
+                {transactions.map((transaction) => (
+                    <tbody>
+                    <tr className={transaction.amount >= 0 ? "table-success" : "table-danger"}>
+                        <td class="text-center">{transaction.transactionId}</td>
+                        <td class="text-center">{transaction.accountId}</td>
+                        <td class="text-center">{transaction.type}</td>
+                        <td class="text-center">{transaction.amount}</td>
+                        <td class="text-center">{new Date(transaction.effectiveDate).toISOString()}</td>
+                    </tr>
+                    </tbody>
+                ))}
             </table>
         </div>
     )

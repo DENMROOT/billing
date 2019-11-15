@@ -12,14 +12,14 @@ public class ResponseExceptionHandler {
 
   /**
    * Handles Response Exception, including its message into the response and wrapping it
-   * in Response entity, depending on error type error message would be logged.
+   * in Response entity.
    *
    * @param e service exception
    * @return response entity
    */
   @ExceptionHandler
   public ResponseEntity handleException(BillingException e) {
-
+    log.error(e.getMessage());
     return ResponseEntity
         .status(e.getHttpStatus())
         .body(e.getMessage());

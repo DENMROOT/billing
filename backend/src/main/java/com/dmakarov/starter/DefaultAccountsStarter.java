@@ -8,12 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
- * Application runner which loads default Dashboard users on application startup,
- * if no users present in MongoDB. This runner should be loaded first {@link Order}.
+ * Application runner which loads default accounts.
  */
 @Component
 @Slf4j
