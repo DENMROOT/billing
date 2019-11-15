@@ -23,7 +23,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
-    <checkstyle.version>8.5</checkstyle.version>
+    <checkstyle.version>8.18</checkstyle.version>
 
     <spring.boot.version>2.1.2.RELEASE</spring.boot.version>
     <lombok.version>1.18.4</lombok.version>
