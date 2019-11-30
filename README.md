@@ -31,3 +31,5 @@ You can import POSTMAN collection of API requests from ```Billing.postman_collec
 
 Frontend is available under 
 [frontend](http://localhost:8080)
+
+# Jenkins build
