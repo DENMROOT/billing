@@ -58,7 +58,7 @@ public class BillingController {
 
   @GetMapping(ACCOUNT + "/{accountId}")
   ResponseEntity<AccountBalance> getAccountBalance(@PathVariable UUID accountId) {
-    log.info("Get account balanse request received, transactionId {}", accountId);
+    log.info("Get account balance request received, transactionId {}", accountId);
 
     AccountBalance accountBalanse = service.getAccountBalance(accountId);
 
