@@ -19,7 +19,12 @@ podTemplate(
         stage('Build a Maven project') {
             git 'https://github.com/DENMROOT/billing.git'
             container('maven') {
-                sh 'mvn -B clean package'
+                sh 'mvn -B clean compile'
+            }
+        }
+        stage('Test Maven project') {
+            container('maven') {
+                sh 'mvn -B test'
             }
         }
     }
