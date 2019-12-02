@@ -19,7 +19,18 @@ podTemplate(
         stage('Build a Maven project') {
             git 'https://github.com/DENMROOT/billing.git'
             container('maven') {
-                sh 'mvn -B clean package'
+                sh 'mvn -B clean compile'
+            }
+        }
+        stage('Test Maven project') {
+            container('maven') {
+                sh 'mvn -B test'
+            }
+        }
+        stage('Build and push docker image') {
+            container('maven') {
+                sh 'apt-get update && apt-get install -y amazon-ecr-credential-helper'
+                sh 'mvn compile com.google.cloud.tools:jib-maven-plugin:1.3.0:build'
             }
         }
     }

@@ -20,11 +20,6 @@
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
@@ -117,6 +112,38 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <configuration>
+          <from>
+            <image>openjdk:11.0.5-stretch</image>
+          </from>
+          <to>
+            <image>984283681696.dkr.ecr.us-east-1.amazonaws.com/billing</image>
+            <credHelper>ecr-login</credHelper>
+          </to>
+          <container>
+            <jvmFlags>
+              <jvmFlag>-Xms512m</jvmFlag>
+            </jvmFlags>
+            <mainClass>com.dmakarov.BillingApplication</mainClass>
+            <args>
+              <arg>some</arg>
+              <arg>args</arg>
+            </args>
+            <ports>
+              <port>8080</port>
+            </ports>
+            <labels>
+              <key1>value1</key1>
+              <key2>value2</key2>
+            </labels>
+          </container>
+        </configuration>
+
       </plugin>
     </plugins>
   </build>
