@@ -12,7 +12,6 @@
   <artifactId>frontend</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-
   <properties>
     <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     <node.version>v12.6.0</node.version>
