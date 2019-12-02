@@ -29,7 +29,7 @@ podTemplate(
         }
         stage('Build and push docker image') {
             container('maven') {
-                sh 'apt-get update update && apt-get install -y amazon-ecr-credential-helper'
+                sh 'apt-get update && apt-get install -y amazon-ecr-credential-helper'
                 sh 'mvn compile com.google.cloud.tools:jib-maven-plugin:1.3.0:build'
             }
         }
