@@ -13,11 +13,25 @@ podTemplate(
         containers: [
                 containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat')
         ], volumes: [
-        persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)
-]) {
+        persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)]
+) {
+    properties([
+            parameters([
+                    gitParameter(branch: '',
+                            branchFilter: 'origin/(.*)',
+                            defaultValue: 'master',
+                            description: '',
+                            name: 'BRANCH',
+                            quickFilterEnabled: false,
+                            selectedValue: 'NONE',
+                            sortMode: 'NONE',
+                            tagFilter: '*',
+                            type: 'PT_BRANCH')
+            ])
+    ])
     node(POD_LABEL) {
         stage('Build a Maven project') {
-            git 'https://github.com/DENMROOT/billing.git'
+            git branch: "${params.BRANCH}", url: 'https://github.com/DENMROOT/billing.git'
             container('maven') {
                 sh 'mvn -B clean compile'
             }
