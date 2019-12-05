@@ -33,7 +33,7 @@ podTemplate(
         stage('Build a Maven project') {
             git 'https://github.com/DENMROOT/billing.git'
             container('maven') {
-                sh 'git checkout "${params.BRANCH}"'
+                sh 'git checkout ${params.BRANCH}'
                 sh 'mvn -B clean compile'
             }
         }
