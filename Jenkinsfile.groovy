@@ -31,8 +31,9 @@ podTemplate(
     ])
     node(POD_LABEL) {
         stage('Build a Maven project') {
-            git branch: "${params.BRANCH}", url: 'https://github.com/DENMROOT/billing.git'
+            git 'https://github.com/DENMROOT/billing.git'
             container('maven') {
+                sh 'git checkout "${params.BRANCH}"'
                 sh 'mvn -B clean compile'
             }
         }
