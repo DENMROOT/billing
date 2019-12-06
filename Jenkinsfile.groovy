@@ -33,7 +33,7 @@ podTemplate(
     node(POD_LABEL) {
         stage('Git checkout') {
             container('git') {
-                sh "clone -b ${params.BRANCH} https://github.com/DENMROOT/billing.git"
+                sh "git clone -b ${params.BRANCH} https://github.com/DENMROOT/billing.git"
             }
         }
         stage('Build Maven project') {
