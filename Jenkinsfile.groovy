@@ -31,9 +31,9 @@ podTemplate(
     ])
     node(POD_LABEL) {
         stage('Build a Maven project') {
-            git 'https://github.com/DENMROOT/billing.git'
             container('maven') {
                 sh 'apt-get update && apt-get install -y git'
+                sh "git clone https://github.com/DENMROOT/billing.git"
                 sh "git checkout ${params.BRANCH}"
                 sh 'mvn -B clean compile'
             }
