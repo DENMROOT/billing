@@ -12,6 +12,8 @@ pipeline {
       steps {
         sh 'set'
         sh "echo OUTSIDE_CONTAINER_ENV_VAR = ${CONTAINER_ENV_VAR}"
+
+        git branch: "${params.BRANCH}", url: 'https://github.com/DENMROOT/billing.git'
         container('maven') {
           sh 'echo MAVEN_CONTAINER_ENV_VAR = ${CONTAINER_ENV_VAR}'
           sh 'mvn -version'
