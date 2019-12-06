@@ -11,6 +11,7 @@ podTemplate(
         name: 'maven-builder',
         namespace: 'jenkins',
         containers: [
+                containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
                 containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat')
         ], volumes: [
         persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)]
@@ -30,17 +31,14 @@ podTemplate(
             ])
     ])
     node(POD_LABEL) {
-        stage('Build a Maven project') {
-            container('maven') {
-                sh 'apt-get update && apt-get install -y git'
-                sh "git clone https://github.com/DENMROOT/billing.git"
-                sh "git checkout ${params.BRANCH}"
-                sh 'mvn -B clean compile'
+        stage('Git checkout') {
+            container('git') {
+                sh "clone -b ${params.BRANCH} https://github.com/DENMROOT/billing.git"
             }
         }
-        stage('Test Maven project') {
+        stage('Build Maven project') {
             container('maven') {
-                sh 'mvn -B test'
+                sh 'mvn -B clean install'
             }
         }
         stage('Build and push docker image') {
