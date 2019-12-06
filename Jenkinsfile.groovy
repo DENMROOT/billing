@@ -38,13 +38,17 @@ podTemplate(
         }
         stage('Build Maven project') {
             container('maven') {
-                sh 'mvn -B clean install'
+                dir('billing/') {
+                    sh 'mvn -B clean install'
+                }
             }
         }
         stage('Build and push docker image') {
             container('maven') {
-                sh 'apt-get update && apt-get install -y amazon-ecr-credential-helper'
-                sh 'mvn compile com.google.cloud.tools:jib-maven-plugin:1.3.0:build'
+                dir('billing/') {
+                    sh 'apt-get update && apt-get install -y amazon-ecr-credential-helper'
+                    sh 'mvn compile com.google.cloud.tools:jib-maven-plugin:1.3.0:build'
+                }
             }
         }
     }
