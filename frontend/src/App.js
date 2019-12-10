@@ -7,7 +7,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:8080/api/billing/v1/transactions/history')
+        fetch('billing-app-service/api/billing/v1/transactions/history')
             .then(res => res.json())
             .then((data) => {
                 this.setState({transactions: data})

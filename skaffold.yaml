@@ -1,0 +1,13 @@
+apiVersion: skaffold/v1
+kind: Config
+metadata:
+  name: billing-app
+build:
+  artifacts:
+  - image: 984283681696.dkr.ecr.us-east-1.amazonaws.com/billing
+    jib:
+      project: backend
+deploy:
+  kubectl:
+    manifests:
+    - _K8S/k8s-app.yaml
