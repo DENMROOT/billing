@@ -6,7 +6,6 @@ replicaCount: 1
 namespace: billing-application
 image:
   repository: "984283681696.dkr.ecr.us-east-1.amazonaws.com/billing"
-  tag: "latest"
   pullPolicy: Always
 service:
   type: LoadBalancer

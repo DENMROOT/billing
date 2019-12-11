@@ -8,6 +8,14 @@ build:
     jib:
       project: backend
 deploy:
-  kubectl:
-    manifests:
-    - _K8S/k8s-app.yaml
+#  kubectl:
+#    manifests:
+#    - _K8S/k8s-app.yaml
+  helm:
+    releases:
+      - name: "{{.HELM_RELEASE_NAME_ENV}}"
+        chartPath: billing-app
+        values:
+          image.repository: 984283681696.dkr.ecr.us-east-1.amazonaws.com/billing
+        setValueTemplates:
+          namespace: "{{.HELM_NAMESPACE_ENV}}"
