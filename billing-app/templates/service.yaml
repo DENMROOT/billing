@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "billing-app.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "billing-app.name" . }}
+    helm.sh/chart: {{ include "billing-app.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: billing-backend
+      port: {{ .Values.service.port }}
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: {{ include "billing-app.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
