@@ -90,7 +90,7 @@ podTemplate(
         }
     }
 
-    timeout(time: 15, unit: "MINUTES") {
+    timeout(time: 15, unit: "SECONDS") {
         input(message: "Finished using deployment ?")
     }
 
@@ -108,7 +108,13 @@ podTemplate(
                             echo "RELEASE = ${env.HELM_RELEASE_NAME_ENV}"
                             echo "NAMESPACE = ${env.HELM_NAMESPACE_ENV}"
 
-                            sh " helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
+                            sh 'apt-get update && apt-get install -y curl'
+
+                            sh 'curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh'
+                            sh 'chmod 700 get_helm.sh'
+                            sh './get_helm.sh'
+
+                            sh "helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
                         }
                     }
                 }
