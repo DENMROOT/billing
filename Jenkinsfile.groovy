@@ -77,13 +77,13 @@ podTemplate(
                                     '}\n' +
                                     'ENDOFFILE'
 
-                            sh " helm del --purge billing-app"
-                            sh " helm del --purge ${env.HELM_RELEASE_NAME_ENV}"
+                            sh " helm uninstall billing-app"
+                            sh " helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
                             sh "helm ls"
                             sh "helm install ${env.HELM_RELEASE_NAME_ENV} ./billing-app/ --set namespace=${env.HELM_NAMESPACE_ENV}"
 
                             input message: "Finished using the deployment ${env.HELM_RELEASE_NAME_ENV}? (Click "Proceed" to continue)"
-                            sh " helm del --purge ${env.HELM_RELEASE_NAME_ENV}"
+                            sh " helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
                         }
                     }
                 }
