@@ -51,7 +51,7 @@ podTemplate(
                             string(credentialsId: 'aws_access_key_id', variable: 'AWS_ACCESS_KEY'),
                             string(credentialsId: 'aws_secret_access_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh 'apt-get update && apt-get install -y amazon-ecr-credential-helper'
-                        sh 'mvn compile com.google.cloud.tools:jib-maven-plugin:1.3.0:build'
+                        sh 'mvn package com.google.cloud.tools:jib-maven-plugin:1.3.0:build -DskipTests'
                     }
 
                 }
@@ -60,9 +60,9 @@ podTemplate(
         stage('Deploy to K8s') {
             container('skaffold') {
                 dir('billing/') {
-                    echo "branch=$BRANCH_NAME, buildNumber=$BUILD_NUMBER, appName=$APP_NAME"
-                    export HELM_RELEASE_NAME_ENV = "billing-app-$BRANCH_NAME-$BUILD_NUMBER"
-                    export HELM_NAMESPACE_ENV = "billing-application-$BRANCH_NAME-$BUILD_NUMBER"
+                    echo "branch=${params.BRANCH}"
+                    export HELM_RELEASE_NAME_ENV = "billing-app-${params.BRANCH}"
+                    export HELM_NAMESPACE_ENV = "billing-application-${params.BRANCH}"
                     sh 'apt-get update && apt-get install -y helm'
                     sh 'skaffold run'
                 }
