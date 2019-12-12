@@ -90,7 +90,7 @@ podTemplate(
         }
     }
 
-    timeout(time: 15, unit: "SECONDS") {
+    timeout(time: 1, unit: "HOUR") {
         input(message: "Finished using deployment ?")
     }
 
