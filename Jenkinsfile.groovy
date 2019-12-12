@@ -76,6 +76,8 @@ podTemplate(
                                     '    "credsStore": "ecr-login"\n' +
                                     '}\n' +
                                     'ENDOFFILE'
+
+                            sh 'helm delete --purge billing-app-test'
                             sh 'skaffold run'
                         }
                     }
