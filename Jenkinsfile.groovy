@@ -78,7 +78,7 @@ podTemplate(
                                     'ENDOFFILE'
 
                             sh "helm ls"
-                            sh "helm install billing-app ./billing-app/"
+                            sh "helm install ${env.HELM_RELEASE_NAME_ENV} ./billing-app/ --set namespace=${env.HELM_NAMESPACE_ENV}"
                         }
                     }
                 }
