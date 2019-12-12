@@ -77,12 +77,37 @@ podTemplate(
                                     '}\n' +
                                     'ENDOFFILE'
 
-                            sh " helm uninstall billing-app"
                             sh " helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
                             sh "helm ls"
                             sh "helm install ${env.HELM_RELEASE_NAME_ENV} ./billing-app/ --set namespace=${env.HELM_NAMESPACE_ENV}"
 
                             input message: "Finished using the deployment ${env.HELM_RELEASE_NAME_ENV}? (Click "Proceed" to continue)"
+                            sh " helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    timeout(time: 15, unit: "MINUTES") {
+        input message: 'Finished using the deployment', ok: 'Yes'
+    }
+
+    node(POD_LABEL) {
+        stage('Clean deployment on K8s') {
+            container('maven') {
+                dir('billing/') {
+                    withEnv([
+                            "HELM_RELEASE_NAME_ENV=billing-app-${params.BRANCH}",
+                            "HELM_NAMESPACE_ENV=billing-application-${params.BRANCH}"]
+                    ) {
+                        withCredentials([
+                                string(credentialsId: 'aws_access_key_id', variable: 'AWS_ACCESS_KEY'),
+                                string(credentialsId: 'aws_secret_access_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+                            echo "RELEASE = ${env.HELM_RELEASE_NAME_ENV}"
+                            echo "NAMESPACE = ${env.HELM_NAMESPACE_ENV}"
+
                             sh " helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
                         }
                     }
