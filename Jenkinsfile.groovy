@@ -83,9 +83,6 @@ podTemplate(
 
                             sh "helm ls"
                             sh "helm install ${env.HELM_RELEASE_NAME_ENV} ./billing-app/ --set namespace=${env.HELM_NAMESPACE_ENV}"
-
-                            input message: "Finished using the deployment ${env.HELM_RELEASE_NAME_ENV}? (Click "Proceed" to continue)"
-                            sh "helm uninstall ${env.HELM_RELEASE_NAME_ENV}"
                         }
                     }
                 }
@@ -94,7 +91,7 @@ podTemplate(
     }
 
     timeout(time: 15, unit: "MINUTES") {
-        input message: 'Finished using the deployment', ok: 'Yes'
+        input(message: "Finished using deployment ?")
     }
 
     node(POD_LABEL) {
