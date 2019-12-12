@@ -21,4 +21,5 @@ deploy:
         setValueTemplates:
           namespace: "{{.HELM_NAMESPACE_ENV}}"
     flags:
-      global: ["atomic"]
+      install: ["atomic"]
+      upgrade: ["atomic"]
