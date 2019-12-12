@@ -78,7 +78,7 @@ podTemplate(
                                     'ENDOFFILE'
 
                             sh "helm ls"
-                            sh "helm install --name billing-app ./billing-app/"
+                            sh "helm install billing-app ./billing-app/"
                         }
                     }
                 }
