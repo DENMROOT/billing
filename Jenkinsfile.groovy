@@ -58,11 +58,14 @@ podTemplate(
             }
         }
         stage('Deploy to K8s') {
+            environment {
+                HELM_RELEASE_NAME_ENV = "billing-app-${params.BRANCH}"
+                HELM_NAMESPACE_ENV = "billing-application-${params.BRANCH}"
+            }
             container('skaffold') {
                 dir('billing/') {
-                    sh 'echo "branch=${params.BRANCH}"'
-                    sh 'export HELM_RELEASE_NAME_ENV = billing-app-${params.BRANCH}'
-                    sh 'export HELM_NAMESPACE_ENV = billing-application-${params.BRANCH}'
+                    echo "RELEASE=${HELM_RELEASE_NAME_ENV}"
+                    echo "NAMESPACE=${HELM_NAMESPACE_ENV}"
                     sh 'apt-get update && apt-get install -y helm'
                     sh 'skaffold run'
                 }
