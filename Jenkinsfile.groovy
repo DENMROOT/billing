@@ -77,8 +77,8 @@ podTemplate(
                                     '}\n' +
                                     'ENDOFFILE'
 
-                            sh 'helm delete --purge billing-app-test'
-                            sh 'skaffold run'
+                            sh "kubectl get nodes"
+                            sh "helm ls"
                         }
                     }
                 }
