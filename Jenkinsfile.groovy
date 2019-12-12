@@ -12,8 +12,7 @@ podTemplate(
         namespace: 'jenkins',
         containers: [
                 containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
-                containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat'),
-                containerTemplate(name: 'skaffold', image: 'gcr.io/k8s-skaffold/skaffold:latest', ttyEnabled: true, command: 'cat')
+                containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat')
         ], volumes: [
         persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)]
 ) {
@@ -62,14 +61,22 @@ podTemplate(
             }
         }
         stage('Deploy to K8s') {
-            container('skaffold') {
+            container('maven') {
                 dir('billing/') {
-                    withEnv(["HELM_RELEASE_NAME_ENV=billing-app-${params.BRANCH}", "HELM_NAMESPACE_ENV=billing-application-${params.BRANCH}"]) {
+                    withEnv([
+                            "HELM_RELEASE_NAME_ENV=billing-app-${params.BRANCH}",
+                            "HELM_NAMESPACE_ENV=billing-application-${params.BRANCH}"]
+                    ) {
                         echo "RELEASE = ${env.HELM_RELEASE_NAME_ENV}"
                         echo "NAMESPACE = ${env.HELM_NAMESPACE_ENV}"
+
+                        sh 'apt-get update && apt-get install -y snapd'
+
+                        sh 'sudo snap install helm --classic'
+                        sh 'sudo snap install skaffold'
+
                         sh 'skaffold run'
                     }
-
                 }
             }
         }
