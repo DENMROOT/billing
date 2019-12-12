@@ -13,6 +13,7 @@ podTemplate(
         containers: [
                 containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
                 containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat')
+                containerTemplate(name: 'skaffold', image: 'gcr.io/k8s-skaffold/skaffold:latest', ttyEnabled: true, command: 'cat')
         ], volumes: [
         persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)]
 ) {
@@ -53,6 +54,17 @@ podTemplate(
                         sh 'mvn compile com.google.cloud.tools:jib-maven-plugin:1.3.0:build'
                     }
 
+                }
+            }
+        }
+        stage('Deploy to K8s') {
+            container('skaffold') {
+                dir('billing/') {
+                    echo "branch=$BRANCH_NAME, buildNumber=$BUILD_NUMBER, appName=$APP_NAME"
+                    export HELM_RELEASE_NAME_ENV = "billing-app-$BRANCH_NAME-$BUILD_NUMBER"
+                    export HELM_NAMESPACE_ENV = "billing-application-$BRANCH_NAME-$BUILD_NUMBER"
+                    sh 'apt-get update && apt-get install -y helm'
+                    sh 'skaffold run'
                 }
             }
         }
