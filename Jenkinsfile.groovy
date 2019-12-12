@@ -77,7 +77,6 @@ podTemplate(
                                     '}\n' +
                                     'ENDOFFILE'
 
-                            sh "kubectl get nodes"
                             sh "helm ls"
                         }
                     }
