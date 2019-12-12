@@ -18,8 +18,8 @@ podTemplate(
         persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)]
 ) {
     environment {
-        HELM_RELEASE_NAME_ENV = "billing-app-${params.BRANCH}"
-        HELM_NAMESPACE_ENV = "billing-application-${params.BRANCH}"
+        HELM_RELEASE_NAME_ENV = ""
+        HELM_NAMESPACE_ENV = ""
     }
     properties([
             parameters([
@@ -62,12 +62,18 @@ podTemplate(
             }
         }
         stage('Deploy to K8s') {
+            environment {
+                HELM_RELEASE_NAME_ENV =
+                HELM_NAMESPACE_ENV = "billing-application-${params.BRANCH}"
+            }
             container('skaffold') {
                 dir('billing/') {
-                    echo "RELEASE=${env.HELM_RELEASE_NAME_ENV}"
-                    echo "NAMESPACE=${env.HELM_NAMESPACE_ENV}"
-                    sh 'apt-get update && apt-get install -y helm'
-                    sh 'skaffold run'
+                    withEnv(["HELM_RELEASE_NAME_ENV=billing-app-${params.BRANCH}", "HELM_NAMESPACE_ENV=billing-application-${params.BRANCH}"]) {
+                        echo "RELEASE = ${env.HELM_RELEASE_NAME_ENV}"
+                        echo "NAMESPACE = ${env.HELM_NAMESPACE_ENV}"
+                        sh 'skaffold run'
+                    }
+
                 }
             }
         }
