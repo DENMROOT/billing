@@ -19,3 +19,5 @@ deploy:
           image.repository: 984283681696.dkr.ecr.us-east-1.amazonaws.com/billing
         setValueTemplates:
           namespace: "{{.HELM_NAMESPACE_ENV}}"
+    flags:
+      global: ["--atomic"]
