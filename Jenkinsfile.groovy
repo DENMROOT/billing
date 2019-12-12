@@ -72,8 +72,8 @@ podTemplate(
 
                         sh 'apt-get update && apt-get install -y snapd'
 
-                        sh 'sudo snap install helm --classic'
-                        sh 'sudo snap install skaffold'
+                        sh 'snap install helm --classic'
+                        sh 'snap install skaffold'
 
                         sh 'skaffold run'
                     }
