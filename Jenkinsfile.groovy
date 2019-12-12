@@ -71,6 +71,7 @@ podTemplate(
                         echo "NAMESPACE = ${env.HELM_NAMESPACE_ENV}"
 
                         sh 'apt-get update && apt-get install -y snapd'
+                        sh 'systemctl start snapd.service'
 
                         sh 'snap install helm --classic'
                         sh 'snap install skaffold'
