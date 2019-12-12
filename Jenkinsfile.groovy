@@ -12,7 +12,8 @@ podTemplate(
         namespace: 'jenkins',
         containers: [
                 containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
-                containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat')
+                containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat'),
+                containerTemplate(name: 'skaffold', image: 'gcr.io/k8s-skaffold/skaffold:latest', ttyEnabled: true, command: 'cat')
         ], volumes: [
         persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)]
 ) {
@@ -56,7 +57,6 @@ podTemplate(
                         sh 'apt-get update && apt-get install -y amazon-ecr-credential-helper'
                         sh 'mvn package com.google.cloud.tools:jib-maven-plugin:1.3.0:build -DskipTests'
                     }
-
                 }
             }
         }
@@ -67,16 +67,26 @@ podTemplate(
                             "HELM_RELEASE_NAME_ENV=billing-app-${params.BRANCH}",
                             "HELM_NAMESPACE_ENV=billing-application-${params.BRANCH}"]
                     ) {
-                        echo "RELEASE = ${env.HELM_RELEASE_NAME_ENV}"
-                        echo "NAMESPACE = ${env.HELM_NAMESPACE_ENV}"
+                        withCredentials([
+                                string(credentialsId: 'aws_access_key_id', variable: 'AWS_ACCESS_KEY'),
+                                string(credentialsId: 'aws_secret_access_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+                            echo "RELEASE = ${env.HELM_RELEASE_NAME_ENV}"
+                            echo "NAMESPACE = ${env.HELM_NAMESPACE_ENV}"
 
-                        sh 'apt-get update && apt-get install -y snapd'
-                        sh 'systemctl start snapd.service'
+                            sh 'apt-get update && apt-get install -y amazon-ecr-credential-helper curl'
 
-                        sh 'snap install helm --classic'
-                        sh 'snap install skaffold'
+                            sh 'curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64'
+                            sh 'chmod +x skaffold'
+                            sh 'mv skaffold /usr/local/bin'
 
-                        sh 'skaffold run'
+                            sh 'curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh'
+                            sh 'chmod 700 get_helm.sh'
+                            sh './get_helm.sh'
+
+                            sh 'skaffold run'
+                        }
+
+
                     }
                 }
             }
