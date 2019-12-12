@@ -31,6 +31,8 @@ podTemplate(
                             type: 'PT_BRANCH')
             ])
     ])
+    def HELM_RELEASE_NAME_ENV = billing-app-${params.BRANCH}
+    def HELM_NAMESPACE_ENV = billing-application-${params.BRANCH}
     node(POD_LABEL) {
         stage('Git checkout') {
             container('git') {
@@ -58,10 +60,6 @@ podTemplate(
             }
         }
         stage('Deploy to K8s') {
-            environment {
-                HELM_RELEASE_NAME_ENV = "billing-app-${params.BRANCH}"
-                HELM_NAMESPACE_ENV = "billing-application-${params.BRANCH}"
-            }
             container('skaffold') {
                 dir('billing/') {
                     echo "RELEASE=${HELM_RELEASE_NAME_ENV}"
