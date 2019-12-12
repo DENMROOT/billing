@@ -12,8 +12,7 @@ podTemplate(
         namespace: 'jenkins',
         containers: [
                 containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
-                containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat'),
-                containerTemplate(name: 'skaffold', image: 'gcr.io/k8s-skaffold/skaffold:latest', ttyEnabled: true, command: 'cat')
+                containerTemplate(name: 'maven', image: 'maven:3.6.3-jdk-11-slim', ttyEnabled: true, command: 'cat')
         ], volumes: [
         persistentVolumeClaim(mountPath: '/root/.m2/repository', claimName: 'maven-repo', readOnly: false)]
 ) {
