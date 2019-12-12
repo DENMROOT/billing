@@ -13,13 +13,10 @@ deploy:
 #    - _K8S/k8s-app.yaml
   helm:
     releases:
-      - name: "{{.HELM_RELEASE_NAME_ENV}}"
+      - name: billing-app-test
         chartPath: billing-app
         recreatePods: true
         values:
           image.repository: 984283681696.dkr.ecr.us-east-1.amazonaws.com/billing
         setValueTemplates:
           namespace: "{{.HELM_NAMESPACE_ENV}}"
-    flags:
-      install: ["atomic"]
-      upgrade: ["atomic"]
