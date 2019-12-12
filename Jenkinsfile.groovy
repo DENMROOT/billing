@@ -62,10 +62,6 @@ podTemplate(
             }
         }
         stage('Deploy to K8s') {
-            environment {
-                HELM_RELEASE_NAME_ENV =
-                HELM_NAMESPACE_ENV = "billing-application-${params.BRANCH}"
-            }
             container('skaffold') {
                 dir('billing/') {
                     withEnv(["HELM_RELEASE_NAME_ENV=billing-app-${params.BRANCH}", "HELM_NAMESPACE_ENV=billing-application-${params.BRANCH}"]) {
