@@ -13,7 +13,7 @@ deploy:
 #    - _K8S/k8s-app.yaml
   helm:
     releases:
-      - name: billing-app-test
+      - name: "{{.HELM_RELEASE_NAME_ENV}}"
         chartPath: billing-app
         recreatePods: true
         values:
