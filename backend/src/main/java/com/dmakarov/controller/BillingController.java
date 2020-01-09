@@ -1,6 +1,7 @@
 package com.dmakarov.controller;
 
 import static com.dmakarov.ApiPathsV1.ACCOUNT;
+import static com.dmakarov.ApiPathsV1.HELLO;
 import static com.dmakarov.ApiPathsV1.HISTORY;
 import static com.dmakarov.ApiPathsV1.ROOT;
 import static com.dmakarov.ApiPathsV1.TRANSACTIONS;
@@ -63,5 +64,14 @@ public class BillingController {
     AccountBalance accountBalanse = service.getAccountBalance(accountId);
 
     return ResponseEntity.ok().body(accountBalanse);
+  }
+
+  @GetMapping(HELLO + "/{name}")
+  ResponseEntity<String> getHelloResponse(@PathVariable String name) {
+    log.info("Get Hello request received, name {}", name);
+
+    String response = "Hello, " + name + "!";
+
+    return ResponseEntity.ok().body(response);
   }
 }

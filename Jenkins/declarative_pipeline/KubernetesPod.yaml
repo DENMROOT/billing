@@ -1,0 +1,21 @@
+metadata:
+  namespace: jenkins
+  labels:
+    some-label: some-label-value
+spec:
+  containers:
+    - name: jnlp
+      env:
+        - name: CONTAINER_ENV_VAR
+          value: jnlp
+    - name: maven
+      image: maven:3.6.3-jdk-11-slim
+      command:
+        - cat
+      tty: true
+      env:
+        - name: CONTAINER_ENV_VAR
+          value: maven
+      volumeMounts:
+        - mountPath: /root/.m2/repository
+          name: maven-repo

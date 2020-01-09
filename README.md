@@ -1,4 +1,4 @@
-## Billing appication
+## Billing application
 
 # Installation requirements
     1. Maven
