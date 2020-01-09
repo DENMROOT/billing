@@ -1,7 +1,6 @@
 package com.dmakarov.controller;
 
 import static com.dmakarov.ApiPathsV1.ACCOUNT;
-import static com.dmakarov.ApiPathsV1.HELLO;
 import static com.dmakarov.ApiPathsV1.HISTORY;
 import static com.dmakarov.ApiPathsV1.ROOT;
 import static com.dmakarov.ApiPathsV1.TRANSACTIONS;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(ROOT)
-public class BillingController {
+public class HelloController {
 
   private final BillingService service;
 
@@ -64,14 +63,5 @@ public class BillingController {
     AccountBalance accountBalanse = service.getAccountBalance(accountId);
 
     return ResponseEntity.ok().body(accountBalanse);
-  }
-
-  @GetMapping(HELLO + "/{name}")
-  ResponseEntity<String> getHelloResponse(@PathVariable String name) {
-    log.info("Get Hello request received, name {}", name);
-
-    String response = "Hello, " + name + "!";
-
-    return ResponseEntity.ok().body(response);
   }
 }

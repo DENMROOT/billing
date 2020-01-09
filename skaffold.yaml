@@ -15,6 +15,7 @@ deploy:
     releases:
       - name: "{{.HELM_RELEASE_NAME_ENV}}"
         chartPath: billing-app
+        recreatePods: true
         values:
           image.repository: 984283681696.dkr.ecr.us-east-1.amazonaws.com/billing
         setValueTemplates:
